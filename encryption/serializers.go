@@ -48,19 +48,23 @@ func (enc *CryptoObject) ToBase85(text []byte) string {
 	return string(dest)
 }
 
-func (enc *CryptoObject) DecryptWithPrivateKey(text []byte) []byte {
+func (enc *CryptoObject) DecryptWithPrivateKey(text []byte) string {
 	var pri *rsa.PrivateKey
 	pri, err := x509.ParsePKCS1PrivateKey(enc.PrivateKeyBlock.Bytes)
 	if err != nil {
 		log.Fatal("Failed to load private key")
 	}
-	decryptedData, err := rsa.DecryptOAEP(enc.Hash, enc.Random, pri, text, nil)
+	decryptedText, err := rsa.DecryptOAEP(enc.Hash, enc.Random, pri, text, nil)
 	if err != nil {
 		log.Fatal("Failed to decrypt")
 	}
-	return decryptedData
+	return string(decryptedText)
 }
 
-func (enc *CryptoObject) FromBase85(text []byte) string {
-	return ""
+func (enc *CryptoObject) FromBase85(text string) []byte {
+	encodedText := []byte(text)
+	decodedText := make([]byte, len(encodedText))
+	decoded, _, _ := ascii85.Decode(decodedText, encodedText, true)
+	decodedText = decodedText[:decoded]
+	return decodedText
 }
