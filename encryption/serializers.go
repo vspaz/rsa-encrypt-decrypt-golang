@@ -10,19 +10,19 @@ import (
 	"log"
 )
 
-type Encryptor struct {
+type CryptoObject struct {
 	PublicKeyBlock *pem.Block
 	Hash           hash.Hash
 }
 
-func New(block *pem.Block, cryptoHash hash.Hash) *Encryptor {
-	return &Encryptor{
+func New(block *pem.Block, cryptoHash hash.Hash) *CryptoObject {
+	return &CryptoObject{
 		block,
 		cryptoHash,
 	}
 }
 
-func (enc *Encryptor) EncryptWithPublicKey(text string) []byte {
+func (enc *CryptoObject) EncryptWithPublicKey(text string) []byte {
 	randomReader := rand.Reader
 	encodedText := []byte(text)
 	var rsaPublicKey *rsa.PublicKey
@@ -38,16 +38,16 @@ func (enc *Encryptor) EncryptWithPublicKey(text string) []byte {
 	return encryptedText
 }
 
-func (enc *Encryptor) ToBase85(text []byte) string {
+func (enc *CryptoObject) ToBase85(text []byte) string {
 	dest := make([]byte, ascii85.MaxEncodedLen(len(text)))
 	ascii85.Encode(dest, text)
 	return string(dest)
 }
 
-func (enc *Encryptor) DecryptWithPrivateKey(text string) []byte {
+func (enc *CryptoObject) DecryptWithPrivateKey(text string) []byte {
 	return nil
 }
 
-func (enc *Encryptor) FromBase85(text []byte) string {
+func (enc *CryptoObject) FromBase85(text []byte) string {
 	return ""
 }
