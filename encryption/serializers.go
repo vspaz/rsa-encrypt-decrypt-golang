@@ -43,3 +43,11 @@ func (enc *Encryptor) ToBase85(text []byte) string {
 	ascii85.Encode(dest, text)
 	return string(dest)
 }
+
+func (enc *Encryptor) DecryptWithPrivateKey(text string) []byte {
+	return nil
+}
+
+func (enc *Encryptor) FromBase85(text []byte) string {
+	return ""
+}
