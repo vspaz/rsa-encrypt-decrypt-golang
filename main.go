@@ -4,7 +4,6 @@ import (
 	"crypto/sha1"
 	"encoding/pem"
 	"fmt"
-	"log"
 	"rsa-encrypt-decrypt-golang/encryption"
 )
 
@@ -50,12 +49,13 @@ h8AAyT+/ZoBIYFtBT3OHOGDwrE6LZufo3Si39rWSw/CJkp8nVX3/+g==
 )
 
 func main() {
+	originalString := "foobarbaz"
 	publicKeyBlock, _ := pem.Decode([]byte(publicKey))
 	privatKeyBlock, _ := pem.Decode([]byte(privateKey))
 	enc := encryption.New(publicKeyBlock, privatKeyBlock, sha1.New())
-	rsaEncryptedText := enc.EncryptWithPublicKey("foobarbaz")
+	rsaEncryptedText := enc.EncryptWithPublicKey(originalString)
 	based85EncodedText := enc.ToBase85(rsaEncryptedText)
-	log.Printf("encoded: %s\n" ,based85EncodedText)
+	fmt.Printf("encoded: %s\n", based85EncodedText)
 	base85decoded := enc.FromBase85(based85EncodedText)
 	decodedText := enc.DecryptWithPrivateKey(base85decoded)
 	fmt.Printf("decoded: %s\n", decodedText)
