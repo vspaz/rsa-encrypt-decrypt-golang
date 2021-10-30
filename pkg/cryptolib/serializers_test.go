@@ -60,6 +60,7 @@ bQIDAQAB
 	rsaEncryptedText := encoder.EncryptWithPublicKey(text)
 	base85EncodedText := encoder.ToBase85(rsaEncryptedText)
 
+	// decoding example
 	privateKeyBlock, _ := pem.Decode([]byte(testPrivateKey))
 	decoder := New(nil, privateKeyBlock, sha1.New())
 	base85decodedText := decoder.FromBase85(base85EncodedText)
