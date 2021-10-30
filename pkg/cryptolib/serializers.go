@@ -42,11 +42,6 @@ func (crypto *CryptoObject) EncryptWithPublicKey(text string) []byte {
 	return encryptedText
 }
 
-func (crypto *CryptoObject) ToBase85(text []byte) string {
-	dest := make([]byte, ascii85.MaxEncodedLen(len(text)))
-	ascii85.Encode(dest, text)
-	return string(dest)
-}
 
 func (crypto *CryptoObject) DecryptWithPrivateKey(text []byte) string {
 	var pri *rsa.PrivateKey
@@ -61,7 +56,13 @@ func (crypto *CryptoObject) DecryptWithPrivateKey(text []byte) string {
 	return string(decryptedText)
 }
 
-func (crypto *CryptoObject) FromBase85(text string) []byte {
+func (crypto CryptoObject) ToBase85(text []byte) string {
+	dest := make([]byte, ascii85.MaxEncodedLen(len(text)))
+	ascii85.Encode(dest, text)
+	return string(dest)
+}
+
+func (crypto CryptoObject) FromBase85(text string) []byte {
 	decodedText := make([]byte, len([]byte(text)))
 	decoded, _, _ := ascii85.Decode(decodedText, []byte(text), true)
 	decodedText = decodedText[:decoded]
