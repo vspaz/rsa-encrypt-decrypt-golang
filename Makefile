@@ -1,4 +1,4 @@
-BINARY_NAME=cryptolib
+BINARY_NAME=cryptonite
 
 all: build
 build:
@@ -6,7 +6,7 @@ build:
 
 .PHONY: test
 test:
-	go test -race ./pkg/ghttp -v
+	go test -race ./pkg/cryptolib -v
 
 .PHONY: clean
 clean:

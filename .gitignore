@@ -3,7 +3,7 @@
 *.so
 *.dylib
 pkg/linux_amd64/
-cryptolib
+cryptonite
 src/
 
 
