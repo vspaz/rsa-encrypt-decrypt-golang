@@ -43,7 +43,6 @@ func (crypto *CryptoObject) EncryptWithPublicKey(text string) []byte {
 	return encryptedText
 }
 
-
 func (crypto *CryptoObject) DecryptWithPrivateKey(text []byte) string {
 	var pri *rsa.PrivateKey
 	pri, err := x509.ParsePKCS1PrivateKey(crypto.PrivateKeyBlock.Bytes)
