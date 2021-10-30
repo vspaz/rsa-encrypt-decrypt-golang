@@ -50,15 +50,19 @@ bQIDAQAB
 
 func main() {
 	text := "some text data"
+
+	// encoding example
 	publicKeyBlock, _ := pem.Decode([]byte(testPublicKey))
-	privateKeyBlock, _ := pem.Decode([]byte(testPrivateKey))
-	encoder := cryptolib.New(publicKeyBlock, privateKeyBlock, sha1.New())
+	encoder := cryptolib.New(publicKeyBlock, nil, sha1.New())
 	rsaEncryptedText := encoder.EncryptWithPublicKey(text)
 	based85EncodedText := encoder.ToBase85(rsaEncryptedText)
-	log.Printf(based85EncodedText)  // base85-encoded string
+	log.Printf(based85EncodedText)
 
-	based85decodedText := encoder.FromBase85(based85EncodedText)
-	rsaDecodedText := encoder.DecryptWithPrivateKey(based85decodedText)
+	// decoding example
+	privateKeyBlock, _ := pem.Decode([]byte(testPrivateKey))
+	decoder := cryptolib.New(nil, privateKeyBlock, sha1.New())
+	based85decodedText := decoder.FromBase85(based85EncodedText)
+	rsaDecodedText := decoder.DecryptWithPrivateKey(based85decodedText)
 	log.Printf(rsaDecodedText) // ->  "some text data"
 	if rsaDecodedText != text {
 		log.Fatal("failed to decrypt")
