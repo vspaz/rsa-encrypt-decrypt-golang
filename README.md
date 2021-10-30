@@ -1,8 +1,9 @@
 # rsa-encrypt-decrypt-golang
 
-small library to encrypt/decrypt data with RSA public/private key pair
-you can generate your own key pair as:
+library to encrypt/decrypt data with RSA public/private key pair
 
+
+you can generate your own key pair as:
 
 ### Generating test public/private RSA key-pair.
 
