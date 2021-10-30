@@ -4,7 +4,7 @@ small library to encrypt/decrypt data with RSA public/private key pair
 you can generate your own key pair as:
 
 
-###Generating test public/private RSA key-pair.
+### Generating test public/private RSA key-pair.
 
 - openssl genrsa -out private.pem 2048
 - openssl rsa -in private.pem -out public.pem -pubout -outform PEM
@@ -84,3 +84,5 @@ func main() {
 }
 
 ```
+
+**NOTE**: please refer to https://github.com/vspaz/rsa-encrypt-decrypt-python if you need the Python lib.
