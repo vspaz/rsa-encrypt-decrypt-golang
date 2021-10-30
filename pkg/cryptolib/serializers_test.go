@@ -1,7 +1,13 @@
 package cryptolib
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
-func TestCryptoObject_ToBase85(t *testing.T) {
-
+func TestToBase85Ok(t *testing.T) {
+	text := "foo"
+	encodedText := CryptoObject{}.ToBase85([]byte(text));
+	assert.Equal(t, "foo", string(CryptoObject{}.FromBase85(encodedText)))
 }
+

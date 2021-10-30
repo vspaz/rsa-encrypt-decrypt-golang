@@ -1,6 +1,7 @@
 package cryptolib
 
 import (
+	"bytes"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
@@ -66,5 +67,6 @@ func (crypto CryptoObject) FromBase85(text string) []byte {
 	decodedText := make([]byte, len([]byte(text)))
 	decoded, _, _ := ascii85.Decode(decodedText, []byte(text), true)
 	decodedText = decodedText[:decoded]
-	return decodedText
+	//remove /x00 null bytes appended by ascii85
+	return bytes.Trim(decodedText, "\x00")
 }
