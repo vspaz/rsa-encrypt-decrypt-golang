@@ -115,3 +115,9 @@ func (e *Encoder) Encrypt(text string) []byte {
 	}
 	return encryptedText
 }
+
+func (e Encoder) ToBase85(text []byte) string {
+	dest := make([]byte, ascii85.MaxEncodedLen(len(text)))
+	ascii85.Encode(dest, text)
+	return string(dest)
+}
