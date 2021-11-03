@@ -69,3 +69,18 @@ func (crypto CryptoObject) FromBase85(text string) []byte {
 	//remove /x00 null bytes appended by ascii85
 	return bytes.Trim(decodedText, "\x00")
 }
+
+type EncodeDecode struct {
+	Hash   hash.Hash
+	Random io.Reader
+}
+
+type Encoder struct {
+	PublicKeyBlock *pem.Block
+	EncodeDecode
+}
+
+type Decoder struct {
+	PrivateKeyBlock *pem.Block
+	EncodeDecode
+}
