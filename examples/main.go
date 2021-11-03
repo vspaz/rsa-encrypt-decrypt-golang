@@ -51,12 +51,9 @@ bQIDAQAB
 func main() {
 	text := "some text data"
 
-	// encoding example
-	publicKeyBlock, _ := pem.Decode([]byte(testPublicKey))
-	encoder := cryptolib.New(publicKeyBlock, nil, sha1.New())
-	rsaEncryptedText := encoder.EncryptWithPublicKey(text)
-	base85EncodedText := encoder.ToBase85(rsaEncryptedText)
-	log.Println(base85EncodedText)
+	encoder := cryptolib.NewEncoder(testPublicKey)
+	rsaEncodedText := encoder.Encrypt(text)
+	base85EncodedText := encoder.ToBase85(rsaEncodedText)
 
 	// decoding example
 	privateKeyBlock, _ := pem.Decode([]byte(testPrivateKey))

@@ -78,17 +78,12 @@ type EncodeDecode struct {
 
 type Encoder struct {
 	PublicKeyBlock *pem.Block
+	Random          io.Reader
 }
 
 type Decoder struct {
 	PrivateKeyBlock *pem.Block
 	EncodeDecode
-}
-
-func NewEncoder(publicKeyBlock *pem.Block, cryptoHash hash.Hash) *Encoder {
-	return &Encoder{
-		PublicKeyBlock: publicKeyBlock,
-	}
 }
 
 func NewDecoder(privateKeyBlock *pem.Block, cryptoHash hash.Hash) *Decoder {
@@ -98,6 +93,13 @@ func NewDecoder(privateKeyBlock *pem.Block, cryptoHash hash.Hash) *Decoder {
 			cryptoHash,
 			rand.Reader,
 		},
+	}
+}
+
+func NewEncoder(publicKey string) *Encoder {
+	publicKeyBlock, _ := pem.Decode([]byte(publicKey))
+	return &Encoder{
+		PublicKeyBlock: publicKeyBlock,
 	}
 }
 
