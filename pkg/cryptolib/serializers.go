@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/sha1"
 	"crypto/x509"
 	"encoding/ascii85"
 	"encoding/pem"
@@ -77,7 +78,6 @@ type EncodeDecode struct {
 
 type Encoder struct {
 	PublicKeyBlock *pem.Block
-	EncodeDecode
 }
 
 type Decoder struct {
@@ -88,10 +88,6 @@ type Decoder struct {
 func NewEncoder(publicKeyBlock *pem.Block, cryptoHash hash.Hash) *Encoder {
 	return &Encoder{
 		PublicKeyBlock: publicKeyBlock,
-		EncodeDecode: EncodeDecode{
-			cryptoHash,
-			rand.Reader,
-		},
 	}
 }
 
@@ -103,4 +99,19 @@ func NewDecoder(privateKeyBlock *pem.Block, cryptoHash hash.Hash) *Decoder {
 			rand.Reader,
 		},
 	}
+}
+
+func (e *Encoder) Encrypt(text string) []byte {
+	encodedText := []byte(text)
+	var rsaPublicKey *rsa.PublicKey
+	pubInterface, parseErr := x509.ParsePKIXPublicKey(e.PublicKeyBlock.Bytes)
+	if parseErr != nil {
+		log.Fatal("Failed to load public key")
+	}
+	rsaPublicKey = pubInterface.(*rsa.PublicKey)
+	encryptedText, encryptErr := rsa.EncryptOAEP(sha1.New(), rand.Reader, rsaPublicKey, encodedText, nil)
+	if encryptErr != nil {
+		log.Fatal("Failed to encrypt text with public key")
+	}
+	return encryptedText
 }
