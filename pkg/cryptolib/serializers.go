@@ -84,3 +84,23 @@ type Decoder struct {
 	PrivateKeyBlock *pem.Block
 	EncodeDecode
 }
+
+func NewEncoder(publicKeyBlock *pem.Block, cryptoHash hash.Hash) *Encoder {
+	return &Encoder{
+		PublicKeyBlock: publicKeyBlock,
+		EncodeDecode: EncodeDecode{
+			cryptoHash,
+			rand.Reader,
+		},
+	}
+}
+
+func NewDecoder(privateKeyBlock *pem.Block, cryptoHash hash.Hash) *Decoder {
+	return &Decoder{
+		PrivateKeyBlock: privateKeyBlock,
+		EncodeDecode: EncodeDecode{
+			cryptoHash,
+			rand.Reader,
+		},
+	}
+}
