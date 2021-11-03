@@ -1,8 +1,6 @@
 package cryptolib
 
 import (
-	"crypto/sha1"
-	"encoding/pem"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -64,10 +62,8 @@ bQIDAQAB
 	rsaEncryptedText := encoder.Encrypt(text)
 	base85EncodedText := encoder.ToBase85(rsaEncryptedText)
 
-	// decoding example
-	privateKeyBlock, _ := pem.Decode([]byte(testPrivateKey))
-	decoder := New(nil, privateKeyBlock, sha1.New())
+	decoder := NewDecoder(testPrivateKey)
 	base85decodedText := decoder.FromBase85(base85EncodedText)
-	rsaDecodedText := decoder.DecryptWithPrivateKey(base85decodedText)
+	rsaDecodedText := decoder.Decrypt(base85decodedText)
 	assert.Equal(t, text, rsaDecodedText)
 }

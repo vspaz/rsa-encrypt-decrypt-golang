@@ -86,7 +86,7 @@ func NewDecoder(privateKey string) *Decoder {
 	}
 }
 
-func (d *Decoder) DecryptWithPrivateKey(text []byte) string {
+func (d *Decoder) Decrypt(text []byte) string {
 	var rsaPrivateKey *rsa.PrivateKey
 	rsaPrivateKey, err := x509.ParsePKCS1PrivateKey(d.PrivateKeyBlock.Bytes)
 	if err != nil {
