@@ -86,7 +86,4 @@ func main() {
 
 ```
 
-
 **NOTE**: please refer to [rsa-encrypt-decrypt-python](https://github.com/vspaz/rsa-encrypt-decrypt-python) if you need the Python lib.
-
-

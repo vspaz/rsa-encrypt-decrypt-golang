@@ -24,13 +24,13 @@ func NewEncoder(publicKey string) *Encoder {
 func (e *Encoder) Encrypt(text string) []byte {
 	encodedText := []byte(text)
 	var rsaPublicKey *rsa.PublicKey
-	pubInterface, parseErr := x509.ParsePKIXPublicKey(e.PublicKeyBlock.Bytes)
-	if parseErr != nil {
+	pub, err := x509.ParsePKIXPublicKey(e.PublicKeyBlock.Bytes)
+	if err != nil {
 		log.Fatal("Failed to load public key")
 	}
-	rsaPublicKey = pubInterface.(*rsa.PublicKey)
-	encryptedText, encryptErr := rsa.EncryptOAEP(sha1.New(), rand.Reader, rsaPublicKey, encodedText, nil)
-	if encryptErr != nil {
+	rsaPublicKey = pub.(*rsa.PublicKey)
+	encryptedText, err := rsa.EncryptOAEP(sha1.New(), rand.Reader, rsaPublicKey, encodedText, nil)
+	if err != nil {
 		log.Fatal("Failed to encrypt text with public key")
 	}
 	return encryptedText
