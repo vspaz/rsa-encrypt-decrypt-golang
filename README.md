@@ -69,17 +69,15 @@ func main() {
 	text := "some text data"
 
 	// encoding example
-	publicKeyBlock, _ := pem.Decode([]byte(testPublicKey))
-	encoder := cryptolib.New(publicKeyBlock, nil, sha1.New())
-	rsaEncryptedText := encoder.EncryptWithPublicKey(text)
-	base85EncodedText := encoder.ToBase85(rsaEncryptedText)
+	encoder := cryptolib.NewEncoder(testPublicKey)
+	rsaEncodedText := encoder.Encrypt(text)
+	base85EncodedText := encoder.ToBase85(rsaEncodedText)
 	log.Printf(base85EncodedText)
 
 	// decoding example
-	privateKeyBlock, _ := pem.Decode([]byte(testPrivateKey))
-	decoder := cryptolib.New(nil, privateKeyBlock, sha1.New())
+	decoder := cryptolib.NewDecoder(testPrivateKey)
 	base85decodedText := decoder.FromBase85(base85EncodedText)
-	rsaDecodedText := decoder.DecryptWithPrivateKey(base85decodedText)
+	rsaDecodedText := decoder.Decrypt(base85decodedText)
 	log.Printf(rsaDecodedText) // ->  "some text data"
 	if rsaDecodedText != text {
 		log.Fatal("failed to decrypt")
