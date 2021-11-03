@@ -7,8 +7,8 @@ import (
 
 func TestToBase85Ok(t *testing.T) {
 	text := "foo"
-	encodedText := CryptoObject{}.ToBase85([]byte(text))
-	assert.Equal(t, "foo", string(CryptoObject{}.FromBase85(encodedText)))
+	encodedText := Encoder{}.ToBase85([]byte(text))
+	assert.Equal(t, "foo", string(Decoder{}.FromBase85(encodedText)))
 }
 
 func TestRsaEncodeDecode(t *testing.T) {
