@@ -52,12 +52,6 @@ bQIDAQAB
 `
 	text := "some text goes here"
 
-	// encoding example
-	//publicKeyBlock, _ := pem.Decode([]byte(testPublicKey))
-	//encoder := New(publicKeyBlock, nil, sha1.New())
-	//rsaEncryptedText := encoder.EncryptWithPublicKey(text)
-	//base85EncodedText := encoder.ToBase85(rsaEncryptedText)
-
 	encoder := NewEncoder(testPublicKey)
 	rsaEncryptedText := encoder.Encrypt(text)
 	base85EncodedText := encoder.ToBase85(rsaEncryptedText)
