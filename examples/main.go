@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/sha1"
-	"encoding/pem"
 	"github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
 	"log"
 )
@@ -55,11 +53,10 @@ func main() {
 	rsaEncodedText := encoder.Encrypt(text)
 	base85EncodedText := encoder.ToBase85(rsaEncodedText)
 
-	// decoding example
-	privateKeyBlock, _ := pem.Decode([]byte(testPrivateKey))
-	decoder := cryptolib.New(nil, privateKeyBlock, sha1.New())
+	decoder := cryptolib.NewDecoder(testPrivateKey)
 	base85decodedText := decoder.FromBase85(base85EncodedText)
-	rsaDecodedText := decoder.DecryptWithPrivateKey(base85decodedText)
+	rsaDecodedText := decoder.Decrypt(base85decodedText)
+
 	log.Println(rsaDecodedText) // ->  "some text data"
 	if rsaDecodedText != text {
 		log.Fatal("failed to decrypt")
