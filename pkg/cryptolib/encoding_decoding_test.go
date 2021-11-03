@@ -50,14 +50,14 @@ sjtwXVB1Y2SxqrhNMdBU7W6ZA8WUQQidr4MBxEFoujsLjaCl8LMsbEpAAilKezwu
 bQIDAQAB
 -----END PUBLIC KEY-----
 `
-	text := "some text goes here"
+	expectedText := "some expectedText goes here"
 
 	encoder := NewEncoder(testPublicKey)
-	rsaEncryptedText := encoder.Encrypt(text)
+	rsaEncryptedText := encoder.Encrypt(expectedText)
 	base85EncodedText := encoder.ToBase85(rsaEncryptedText)
 
 	decoder := NewDecoder(testPrivateKey)
 	base85decodedText := decoder.FromBase85(base85EncodedText)
-	rsaDecodedText := decoder.Decrypt(base85decodedText)
-	assert.Equal(t, text, rsaDecodedText)
+	actualText := decoder.Decrypt(base85decodedText)
+	assert.Equal(t, expectedText, actualText)
 }
