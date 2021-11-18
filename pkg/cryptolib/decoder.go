@@ -7,6 +7,7 @@ import (
 	"crypto/sha1"
 	"crypto/x509"
 	"encoding/ascii85"
+	"encoding/base64"
 	"encoding/pem"
 	"log"
 )
@@ -41,4 +42,9 @@ func (d Decoder) FromBase85(text string) []byte {
 	decodedText = decodedText[:decoded]
 	//remove /x00 null bytes appended by ascii85
 	return bytes.Trim(decodedText, "\x00")
+}
+
+func (d Decoder) FromBase64(text string) []byte {
+	decoded, _ := base64.StdEncoding.DecodeString(text)
+	return decoded
 }
