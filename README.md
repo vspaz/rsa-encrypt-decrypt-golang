@@ -1,7 +1,7 @@
 # rsa-encrypt-decrypt-golang
 
-library to encrypt/decrypt data with RSA public/private key pair
-
+a small library to encrypt/decrypt data with RSA public/private key pair and 
+base64/85 encoding/decoding capabilities.
 
 you can generate your own key pair as:
 
@@ -18,8 +18,6 @@ openssl rsa -in private.pem -out public.pem -pubout -outform PEM
 package main
 
 import (
-	"crypto/sha1"
-	"encoding/pem"
 	"github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
 	"log"
 )
