@@ -6,6 +6,7 @@ import (
 	"crypto/sha1"
 	"crypto/x509"
 	"encoding/ascii85"
+	"encoding/base64"
 	"encoding/pem"
 	"log"
 )
@@ -40,4 +41,8 @@ func (e Encoder) ToBase85(text []byte) string {
 	dest := make([]byte, ascii85.MaxEncodedLen(len(text)))
 	ascii85.Encode(dest, text)
 	return string(dest)
+}
+
+func (e Encoder) ToBase64(text []byte) string {
+	return base64.StdEncoding.EncodeToString(text)
 }
