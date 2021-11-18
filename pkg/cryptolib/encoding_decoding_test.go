@@ -5,14 +5,8 @@ import (
 	"testing"
 )
 
-func TestToBase85Ok(t *testing.T) {
-	text := "foo"
-	encodedText := Encoder{}.ToBase85([]byte(text))
-	assert.Equal(t, "foo", string(Decoder{}.FromBase85(encodedText)))
-}
-
-func TestRsaEncodeDecode(t *testing.T) {
-	testPrivateKey := `-----BEGIN RSA PRIVATE KEY-----
+const (
+	testPrivateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAxGDcSAjiHKP9v2ITR+BjQmt9Tx2zW08ZyrjOxPew+Gxl2m5z
 JyoP8sicZV81BeMNFkMg6q7sMtRXHhX1nFiTql5HBIqhZohYlN3LIXK2bdPWpDtt
 rOFXfsSbZ4Wqy3XhXBhiPNn3kkkRv1N5L/IYcdrxwqaqvTlJzOeQnDsd3+AmkYst
@@ -40,7 +34,7 @@ R8kUSSyPqFHIkURtB/sTobrpww5dmA4dCcz2UNuIWXf6UKCXbKsFS5XWH5ONy4l8
 8UmZ7fFkjNFJH0Rh5y+tmoFyou3FsWzL2lpd1mIryAH2LR3PGE/t
 -----END RSA PRIVATE KEY-----
 `
-	testPublicKey := `-----BEGIN PUBLIC KEY-----
+	testPublicKey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxGDcSAjiHKP9v2ITR+Bj
 Qmt9Tx2zW08ZyrjOxPew+Gxl2m5zJyoP8sicZV81BeMNFkMg6q7sMtRXHhX1nFiT
 ql5HBIqhZohYlN3LIXK2bdPWpDttrOFXfsSbZ4Wqy3XhXBhiPNn3kkkRv1N5L/IY
@@ -50,6 +44,15 @@ sjtwXVB1Y2SxqrhNMdBU7W6ZA8WUQQidr4MBxEFoujsLjaCl8LMsbEpAAilKezwu
 bQIDAQAB
 -----END PUBLIC KEY-----
 `
+)
+
+func TestToBase85Ok(t *testing.T) {
+	text := "foo"
+	encodedText := Encoder{}.ToBase85([]byte(text))
+	assert.Equal(t, "foo", string(Decoder{}.FromBase85(encodedText)))
+}
+
+func TestRsaEncodeDecodeAndBase85(t *testing.T) {
 	expectedText := "some expectedText goes here"
 
 	encoder := NewEncoder(testPublicKey)
