@@ -52,6 +52,22 @@ func TestToBase85Ok(t *testing.T) {
 	assert.Equal(t, "foo", string(Decoder{}.FromBase85(encodedText)))
 }
 
+func TestToBase64Ok(t *testing.T) {
+	someString := "foobar"
+	encodedText := Encoder{}.ToBase64([]byte(someString))
+	assert.Equal(t, someString, string(Decoder{}.FromBase64(encodedText)))
+}
+
+func TestRsaEncryptDecrypt(t *testing.T) {
+	expectedText := "some expectedText goes here"
+	encoder := NewEncoder(testPublicKey)
+	rsaEncryptedText := encoder.Encrypt(expectedText)
+
+	decoder := NewDecoder(testPrivateKey)
+	rsaDecryptedText := decoder.Decrypt(rsaEncryptedText)
+	assert.Equal(t, expectedText, rsaDecryptedText)
+}
+
 func TestRsaEncodeDecodeAndBase85(t *testing.T) {
 	expectedText := "some expectedText goes here"
 
@@ -63,10 +79,4 @@ func TestRsaEncodeDecodeAndBase85(t *testing.T) {
 	base85decodedText := decoder.FromBase85(base85EncodedText)
 	actualText := decoder.Decrypt(base85decodedText)
 	assert.Equal(t, expectedText, actualText)
-}
-
-func TestToBase64Ok(t *testing.T) {
-	someString := "foobar"
-	encodedText := Encoder{}.ToBase64([]byte(someString))
-	assert.Equal(t, someString, string(Decoder{}.FromBase64(encodedText)))
 }
