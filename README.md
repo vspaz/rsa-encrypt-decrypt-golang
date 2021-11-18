@@ -77,7 +77,7 @@ func rsaEncryptDecrypt() {
 	rsaDecryptedText := decoder.Decrypt(rsaEncryptedText)
 
 	if expectedText != rsaDecryptedText {
-		log.Println("failed to decrypt")
+		log.Fatalln("failed to decrypt")
 	}
 }
 
@@ -92,7 +92,7 @@ import (
 )
 
 func rsaEncryptDecryptAndBase85Encode() {
-	text := "some text data"
+	expectedText := "some expectedText goes here"
 
 	// encoding example
 	encoder := cryptolib.NewEncoder(testPublicKey)
@@ -105,8 +105,8 @@ func rsaEncryptDecryptAndBase85Encode() {
 	base85decodedText := decoder.FromBase85(base85EncodedText)
 	rsaDecodedText := decoder.Decrypt(base85decodedText)
 	log.Println(rsaDecodedText) // ->  "some text data"
-	if rsaDecodedText != text {
-		log.Fatal("failed to decrypt")
+	if rsaDecodedText != expectedText {
+		log.Fatalln("failed to decrypt")
 	}
 }
 ```
@@ -120,11 +120,11 @@ import (
 )
 
 func rsaEncryptDecryptAndBase64Encode() {
-	text := "some text data"
+	expectedText := "some expectedText goes here"
 
 	// encoding example
 	encoder := cryptolib.NewEncoder(testPublicKey)
-	rsaEncodedText := encoder.Encrypt(text)
+	rsaEncodedText := encoder.Encrypt(expectedText)
 	base64EncodedText := encoder.ToBase64(rsaEncodedText)
 	log.Println(base64EncodedText)
 
@@ -133,7 +133,7 @@ func rsaEncryptDecryptAndBase64Encode() {
 	base64decodedText := decoder.FromBase64(base64EncodedText)
 	rsaDecodedText := decoder.Decrypt(base64decodedText)
 	log.Println(rsaDecodedText) // ->  "some text data"
-	if rsaDecodedText != text {
+	if rsaDecodedText != expectedText {
 		log.Fatalln("failed to decrypt")
 	}
 }
@@ -148,11 +148,11 @@ import (
 )
 
 func encodeDecodeWithBase85() {
-	expectedText := "foo"
+	expectedText := "some expectedText goes here"
 	encodedText := cryptolib.Encoder{}.ToBase85([]byte(expectedText))
 	actualText := string(cryptolib.Decoder{}.FromBase85(encodedText))
 	if actualText !=  expectedText {
-		log.Fatal("failed to decode")
+		log.Fatalln("failed to decode")
     }
 }
 ```
@@ -166,11 +166,11 @@ import (
 )
 
 func encodeDecodeWithBase64() {
-	expectedText := "foo"
+	expectedText := "some expectedText goes here"
 	encodedText := cryptolib.Encoder{}.ToBase64([]byte(expectedText))
 	actualText := string(cryptolib.Decoder{}.FromBase64(encodedText))
 	if actualText !=  expectedText {
-		log.Fatal("failed to decode")
+		log.Fatalln("failed to decode")
     }
 }
 ```
