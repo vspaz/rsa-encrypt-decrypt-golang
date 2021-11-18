@@ -17,11 +17,6 @@ openssl rsa -in private.pem -out public.pem -pubout -outform PEM
 ```go
 package main
 
-import (
-	"fmt"
-	"github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
-)
-
 const (
 	testPrivateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAxGDcSAjiHKP9v2ITR+BjQmt9Tx2zW08ZyrjOxPew+Gxl2m5z
@@ -63,6 +58,7 @@ bQIDAQAB
 `
 )
 ```
+
 ```go
 package main
 
@@ -140,6 +136,42 @@ func rsaEncryptDecryptAndBase64Encode() {
 	if rsaDecodedText != text {
 		log.Fatalln("failed to decrypt")
 	}
+}
+```
+
+```go
+package main
+
+import (
+	"github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
+	"log"
+)
+
+func encodeDecodeWithBase85() {
+	expectedText := "foo"
+	encodedText := cryptolib.Encoder{}.ToBase85([]byte(expectedText))
+	actualText := string(cryptolib.Decoder{}.FromBase85(encodedText))
+	if actualText !=  expectedText {
+		log.Fatal("failed to decode")
+    }
+}
+```
+
+```go
+package main
+
+import (
+	"github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
+	"log"
+)
+
+func encodeDecodeWithBase64() {
+	expectedText := "foo"
+	encodedText := cryptolib.Encoder{}.ToBase64([]byte(expectedText))
+	actualText := string(cryptolib.Decoder{}.FromBase64(encodedText))
+	if actualText !=  expectedText {
+		log.Fatal("failed to decode")
+    }
 }
 ```
 
