@@ -80,3 +80,16 @@ func TestRsaEncodeDecodeAndBase85(t *testing.T) {
 	actualText := decoder.Decrypt(base85decodedText)
 	assert.Equal(t, expectedText, actualText)
 }
+
+func TestRsaEncryptDecryptAndBase64(t *testing.T) {
+	expectedText := "some expectedText goes here"
+
+	encoder := NewEncoder(testPublicKey)
+	rsaEncryptedText := encoder.Encrypt(expectedText)
+	base85EncodedText := encoder.ToBase64(rsaEncryptedText)
+
+	decoder := NewDecoder(testPrivateKey)
+	base85decodedText := decoder.FromBase64(base85EncodedText)
+	actualText := decoder.Decrypt(base85decodedText)
+	assert.Equal(t, expectedText, actualText)
+}
