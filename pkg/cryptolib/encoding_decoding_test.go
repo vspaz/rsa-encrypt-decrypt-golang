@@ -61,3 +61,9 @@ bQIDAQAB
 	actualText := decoder.Decrypt(base85decodedText)
 	assert.Equal(t, expectedText, actualText)
 }
+
+func TestToBase64Ok(t *testing.T) {
+	someString := "foobar"
+	encodedText := Encoder{}.ToBase64([]byte(someString))
+	assert.Equal(t, someString, string(Decoder{}.FromBase64(encodedText)))
+}

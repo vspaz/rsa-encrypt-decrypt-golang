@@ -6,7 +6,7 @@ build:
 
 .PHONY: test
 test:
-	go test -race ./pkg/cryptolib -v
+	go test ./... -v
 
 .PHONY: clean
 clean:
