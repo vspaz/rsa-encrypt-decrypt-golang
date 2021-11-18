@@ -18,8 +18,8 @@ openssl rsa -in private.pem -out public.pem -pubout -outform PEM
 package main
 
 import (
+	"fmt"
 	"github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
-	"log"
 )
 
 const (
@@ -62,26 +62,85 @@ bQIDAQAB
 -----END PUBLIC KEY-----
 `
 )
+```
+```go
+package main
 
-func main() {
+import (
+    "log"
+    "github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
+)
+
+func rsaEncryptDecrypt() {
+	// example_1: Encrypt/Decrypt with RSA
+	expectedText := "some expectedText goes here"
+	encoder := cryptolib.NewEncoder(testPublicKey)
+	rsaEncryptedText := encoder.Encrypt(expectedText)
+
+	decoder := cryptolib.NewDecoder(testPrivateKey)
+	rsaDecryptedText := decoder.Decrypt(rsaEncryptedText)
+
+	if expectedText != rsaDecryptedText {
+		log.Println("failed to decrypt")
+	}
+}
+
+```
+
+```go
+package main
+
+import (
+	"log"
+	"github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
+)
+
+func rsaEncryptDecryptAndBase85Encode() {
 	text := "some text data"
 
 	// encoding example
 	encoder := cryptolib.NewEncoder(testPublicKey)
 	rsaEncodedText := encoder.Encrypt(text)
 	base85EncodedText := encoder.ToBase85(rsaEncodedText)
-	log.Printf(base85EncodedText)
+	log.Println(base85EncodedText)
 
 	// decoding example
 	decoder := cryptolib.NewDecoder(testPrivateKey)
 	base85decodedText := decoder.FromBase85(base85EncodedText)
 	rsaDecodedText := decoder.Decrypt(base85decodedText)
-	log.Printf(rsaDecodedText) // ->  "some text data"
+	log.Println(rsaDecodedText) // ->  "some text data"
 	if rsaDecodedText != text {
 		log.Fatal("failed to decrypt")
 	}
 }
+```
 
+```go
+package main
+
+import (
+	"github.com/vspaz/rsa-encrypt-decrypt-golang/pkg/cryptolib"
+	"log"
+)
+
+func rsaEncryptDecryptAndBase64Encode() {
+	text := "some text data"
+
+	// encoding example
+	encoder := cryptolib.NewEncoder(testPublicKey)
+	rsaEncodedText := encoder.Encrypt(text)
+	base64EncodedText := encoder.ToBase64(rsaEncodedText)
+	log.Println(base64EncodedText)
+
+	// decoding example
+	decoder := cryptolib.NewDecoder(testPrivateKey)
+	base64decodedText := decoder.FromBase64(base64EncodedText)
+	rsaDecodedText := decoder.Decrypt(base64decodedText)
+	log.Println(rsaDecodedText) // ->  "some text data"
+	if rsaDecodedText != text {
+		log.Fatalln("failed to decrypt")
+	}
+}
 ```
 
 **NOTE**: please refer to [rsa-encrypt-decrypt-python](https://github.com/vspaz/rsa-encrypt-decrypt-python) if you need the Python lib.
