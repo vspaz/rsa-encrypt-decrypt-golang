@@ -16,6 +16,6 @@ clean:
 style-fix:
 	gofmt -w .
 
-.PHONE: lint
+.PHONY: lint
 lint:
 	golangci-lint run
