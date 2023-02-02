@@ -2,7 +2,7 @@ BINARY_NAME=cryptonite
 
 all: build
 build:
-	go build -o $(BINARY_NAME) examples/main.go
+	go build -ldflags="-s -w" -o $(BINARY_NAME) examples/main.go; upx cryptonite
 
 .PHONY: test
 test:
