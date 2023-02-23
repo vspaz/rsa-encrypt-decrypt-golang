@@ -14,18 +14,29 @@ import (
 
 type Decoder struct {
 	PrivateKeyBlock *pem.Block
+	Password        string
 }
 
-func NewDecoder(privateKey string) *Decoder {
+func NewDecoder(privateKey string, password string) *Decoder {
 	privateKeyBlock, _ := pem.Decode([]byte(privateKey))
 	return &Decoder{
 		PrivateKeyBlock: privateKeyBlock,
+		Password:        password,
 	}
 }
 
 func (d *Decoder) Decrypt(text []byte) string {
 	var rsaPrivateKey *rsa.PrivateKey
-	rsaPrivateKey, err := x509.ParsePKCS1PrivateKey(d.PrivateKeyBlock.Bytes)
+	privateBlock := d.PrivateKeyBlock.Bytes
+	if d.Password != "" {
+		block, err := x509.DecryptPEMBlock(d.PrivateKeyBlock, []byte(d.Password))
+		if err != nil {
+			log.Fatal(err)
+		}
+		privateBlock = block
+	}
+
+	rsaPrivateKey, err := x509.ParsePKCS1PrivateKey(privateBlock)
 	if err != nil {
 		log.Fatal("Failed to load private key")
 	}
