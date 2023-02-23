@@ -18,7 +18,10 @@ type Decoder struct {
 }
 
 func NewDecoder(privateKey string) *Decoder {
-	privateKeyBlock, _ := pem.Decode([]byte(privateKey))
+	privateKeyBlock, err := pem.Decode([]byte(privateKey))
+	if err != nil {
+		log.Fatalf("failed to read private key %s", err)
+	}
 	return &Decoder{
 		PrivateKeyBlock: privateKeyBlock,
 		Password:        "",
@@ -26,7 +29,10 @@ func NewDecoder(privateKey string) *Decoder {
 }
 
 func NewDecoderWithPassword(privateKey string, password string) *Decoder {
-	privateKeyBlock, _ := pem.Decode([]byte(privateKey))
+	privateKeyBlock, err := pem.Decode([]byte(privateKey))
+	if err != nil {
+		log.Fatalf("failed to read private key %s", err)
+	}
 	return &Decoder{
 		PrivateKeyBlock: privateKeyBlock,
 		Password:        password,
