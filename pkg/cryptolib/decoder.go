@@ -17,7 +17,15 @@ type Decoder struct {
 	Password        string
 }
 
-func NewDecoder(privateKey string, password string) *Decoder {
+func NewDecoder(privateKey string) *Decoder {
+	privateKeyBlock, _ := pem.Decode([]byte(privateKey))
+	return &Decoder{
+		PrivateKeyBlock: privateKeyBlock,
+		Password:        "",
+	}
+}
+
+func NewDecoderWithPassword(privateKey string, password string) *Decoder {
 	privateKeyBlock, _ := pem.Decode([]byte(privateKey))
 	return &Decoder{
 		PrivateKeyBlock: privateKeyBlock,
