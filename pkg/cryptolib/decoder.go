@@ -22,10 +22,7 @@ func NewDecoder(privateKey string) *Decoder {
 }
 
 func NewDecoderWithPassword(privateKey string, password string) *Decoder {
-	privateKeyBlock, err := pem.Decode([]byte(privateKey))
-	if err != nil {
-		log.Fatalf("failed to read private key %s", err)
-	}
+	privateKeyBlock, _ := pem.Decode([]byte(privateKey))
 	return &Decoder{
 		PrivateKeyBlock: privateKeyBlock,
 		Password:        password,
@@ -33,12 +30,11 @@ func NewDecoderWithPassword(privateKey string, password string) *Decoder {
 }
 
 func (d *Decoder) Decrypt(text []byte) string {
-	var rsaPrivateKey *rsa.PrivateKey
 	privateBlock := d.PrivateKeyBlock.Bytes
 	if d.Password != "" {
 		block, err := x509.DecryptPEMBlock(d.PrivateKeyBlock, []byte(d.Password))
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("failed to decrypt pem block with password %s", err)
 		}
 		privateBlock = block
 	}
