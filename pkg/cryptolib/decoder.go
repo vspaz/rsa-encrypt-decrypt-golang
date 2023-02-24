@@ -18,28 +18,21 @@ type Decoder struct {
 }
 
 func NewDecoder(privateKey string) *Decoder {
-	return NewDecoderWithPassword(privateKey, "")
-}
-
-func NewDecoderWithPassword(privateKey string, password string) *Decoder {
 	privateKeyBlock, _ := pem.Decode([]byte(privateKey))
 	return &Decoder{
 		PrivateKeyBlock: privateKeyBlock,
-		Password:        password,
 	}
 }
 
-func (d *Decoder) Decrypt(text []byte) string {
-	privateBlock := d.PrivateKeyBlock.Bytes
-	if d.Password != "" {
-		block, err := x509.DecryptPEMBlock(d.PrivateKeyBlock, []byte(d.Password))
-		if err != nil {
-			log.Fatalf("failed to decrypt pem block with password %s", err)
-		}
-		privateBlock = block
-	}
+//func (d *Decoder) DecryptWithPassword(text []byte, password string) string {
+//	block, err := x509.DecryptPEMBlock(d.PrivateKeyBlock, []byte(password))
+//	if err != nil {
+//		log.Fatalf("failed to decrypt pem block with password %s", err)
+//	}
+//}
 
-	rsaPrivateKey, err := x509.ParsePKCS1PrivateKey(privateBlock)
+func (d *Decoder) Decrypt(text []byte) string {
+	rsaPrivateKey, err := x509.ParsePKCS1PrivateKey(d.PrivateKeyBlock.Bytes)
 	if err != nil {
 		log.Fatal("Failed to load private key")
 	}
