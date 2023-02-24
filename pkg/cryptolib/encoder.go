@@ -22,6 +22,24 @@ func NewEncoder(publicKey string) *Encoder {
 	}
 }
 
+func (e *Encoder) EncryptWithPassword(text, password string) []byte {
+	block, err := x509.DecryptPEMBlock(e.PublicKeyBlock, []byte(password))
+	if err != nil {
+		log.Fatalf("failed to decrypt pem block with password %s", err)
+	}
+	pub, err := x509.ParsePKIXPublicKey(block)
+	if err != nil {
+		log.Fatal("Failed to load public key")
+	}
+	rsaPublicKey := pub.(*rsa.PublicKey)
+	encodedText := []byte(text)
+	encryptedText, err := rsa.EncryptOAEP(sha1.New(), rand.Reader, rsaPublicKey, encodedText, nil)
+	if err != nil {
+		log.Fatal("Failed to encrypt text with public key")
+	}
+	return encryptedText
+}
+
 func (e *Encoder) Encrypt(text string) []byte {
 	pub, err := x509.ParsePKIXPublicKey(e.PublicKeyBlock.Bytes)
 	if err != nil {
