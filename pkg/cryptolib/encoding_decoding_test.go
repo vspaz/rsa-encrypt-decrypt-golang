@@ -68,51 +68,6 @@ func TestRsaEncryptDecrypt(t *testing.T) {
 	assert.Equal(t, expectedText, rsaDecryptedText)
 }
 
-func TestRsaEncryptDecryptWithPassword(t *testing.T) {
-	publicKey := `-----BEGIN PUBLIC KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9OUgjNr60cO7W8wcXZgw
-4h9KQCBPyyiaMgahh4otlxct+GmeqNoa37jjshu0sN6GjpyMNG1rHvhKmjk8d1Tr
-LBVQ9L7RSjjehGlV68kVOwdST1tvzXTaFQT/VrYCki44FlcaOiRiPqXdVceWVQOd
-0hoWfBH2TzGPPlnOJtRxiMHD6iop9dUDF0zIxUqFVWHyGh/r6jrQeeUS8AbL0tTQ
-/vtuR8TiWMM5lLA4+aZw8SoKbBXkuvfrOhrO2QvCsHk9UaJg/0Bguo4YVNnYt7gk
-rJfUzyd141I29MankvYEEKtg1N2H+iRucJ+dy8ZbOcHs/YmwtinjJWVxXzuMLXLJ
-HwIDAQAB
------END PUBLIC KEY-----`
-	expectedText := "some expectedText goes here"
-	encoder := NewEncoder(publicKey)
-	rsaEncryptedText := encoder.EncryptWithPassword(expectedText, "foobar")
-	privateKey := `-----BEGIN ENCRYPTED PRIVATE KEY-----
-MIIFLTBXBgkqhkiG9w0BBQ0wSjApBgkqhkiG9w0BBQwwHAQIQTnoF86iXFUCAggA
-MAwGCCqGSIb3DQIJBQAwHQYJYIZIAWUDBAECBBAazFG0G/1Lf0S27g4dWECCBIIE
-0EFQPL1OtkXIdiWeg2vGE1MV8HJ8r0eMAtvPNbxNOngGsOZEd3VQhm6NOGSqU7NT
-yCaHNKd4FatOBMb8yFJU8sbDOKjnyVyYOaT3Lz1pGhUupw5OuSeKV2UTSoq743hd
-IDNt9lwjz+Hn9RJLZW6Wyq4/aMwoL54j6n4EBAmS54MXZgxnxMgAvikeHLMDmlkb
-I4GzKYUud/OKyJcesMnQbKW3H7czyeFgq2/6ocKv5wW+jOULgbMJdnIaKl8WRIRS
-ZgrKgnlb6C5TAig4WHah6npOehZ3+bW9nfRmxrlp3NjpWfuO+l9uvoX/I8mLDXde
-LaLz7SCQSw0DDwsJSfAWAiKRM2ZaXfEiND/g3za9v68y/r9r+YHlKsmwPE+9D2mr
-L9gJ8MPYaOb+ngf8as2o9wE3WjYZkaaNE3ygrkkSKX+gw/GDc3puvf6dgPDzzmy4
-zzLpxFpOqXEjqjBCO3kRD5hHIOJuftXEiYxc2rrQfei26V961O7Qr6857p0h0sxH
-+cTfTzlmEKYk5mETzGT7gvjKEebQAQX3Ffi7LXCePUPSAco0Rw5kzPr8zLc6+Xii
-0Qi+4Bh1rnKC03i7fmjwkpJOSM1l+Wer0WDpXVgkx9yZkZEqgHdzGfO+iDhKGYvX
-PhdEHkhcvIVHBdQTTSbV0jb92aAG7Q6ctSQL7HTOC+CQV7msOtGzAx89hKXLkkSi
-HNR3iSwqL8U3dXMrH6HEvCo0vKcotHjzskpK2CswZEKsYcZ5hbfIrcQCJ9/7Kvbi
-IUihLVbkJsOx9qx+Gb2xwVYeqEleTPY1oAxK4equ31oupUsWjEyLecfUk4Y9WBd1
-njQPDOECWEkm3RMWBYgqXlglKIzqixzyf0fD+7pitYVBdb4a+RsUIjRXBnvUjVie
-n6ZFEyQY4ph62r3rbIFztTQJdMpdvZCYZGR+rigXWp8p6QzPlHI/wB4/Jb8ww7sW
-nj7MCEuTgJPiRkL26qC7IWdsyWWZ+9zOm37grgTGj+1COcjPeS0rj8JQoAVCMI2h
-ZrfhEKJhPzGEdB4PXUKjBIHJtT34k34dnZ4KruOF0PTD06fL+yXJCIsZ3yGqN/Tx
-OXWFw/TF/9dBlgYMpiaXUS+ZFDcyj1zEvqZ3JKsDcffNIABwtmOP0Yr6geUfpPea
-j2MSn+pe3X845nHDHBBC8kmliey8TyLTl9EtjNkSWzx5aMB1QbV3ehMEKKBSfn0v
-AjkWYTvEqYE5p1ItPXz39T/ikAlMPrtrJUqrdDcs/7LHgeMLJT1Zv5vGr3k398GD
-30INv907NNavhOV86U68JpRMEVHCi2e8xY9vhu/Ah+YTMx1DfF9jw2nnrmqr3LSe
-/4NVBwSkM48iCNAfZ8M/sTEkXPHhQ8JwX3/MWpY8l5Ts3HZvfDM4TR+C0XJkiqkX
-athmdaZ0uGWOR/BtG4EeZPznchacDrgUJwPTeHhDBuhnIIuc94UyLgmZ+XrD1jtO
-d720IUmIoe2iCpd4pHN3mm27eLYWC6g3jpSP6EXQA2DztVcwhKm5CH3L40McZ9M3`
-	decoder := NewDecoder(privateKey)
-	rsaDecryptedText := decoder.DecryptWithPassword(rsaEncryptedText, "foobar")
-	assert.Equal(t, expectedText, rsaDecryptedText)
-}
-
 func TestRsaEncodeDecodeAndBase85(t *testing.T) {
 	expectedText := "some expectedText goes here"
 

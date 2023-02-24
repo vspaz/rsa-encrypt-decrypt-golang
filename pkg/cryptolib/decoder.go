@@ -23,22 +23,6 @@ func NewDecoder(privateKey string) *Decoder {
 	}
 }
 
-func (d *Decoder) DecryptWithPassword(text []byte, password string) string {
-	block, err := x509.DecryptPEMBlock(d.PrivateKeyBlock, []byte(password))
-	if err != nil {
-		log.Fatalf("failed to decrypt pem block with password %s", err)
-	}
-	rsaPrivateKey, err := x509.ParsePKCS1PrivateKey(block)
-	if err != nil {
-		log.Fatal("Failed to load private key")
-	}
-	decryptedText, err := rsa.DecryptOAEP(sha1.New(), rand.Reader, rsaPrivateKey, text, nil)
-	if err != nil {
-		log.Fatal("Failed to decrypt")
-	}
-	return string(decryptedText)
-}
-
 func (d *Decoder) Decrypt(text []byte) string {
 	rsaPrivateKey, err := x509.ParsePKCS1PrivateKey(d.PrivateKeyBlock.Bytes)
 	if err != nil {
